@@ -1,40 +1,599 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <title>Hello World</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>可愛小舖 ✨（前端版）</title>
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                   "Segoe UI", "Noto Sans TC", Arial, sans-serif;
-      background: linear-gradient(135deg, #ffd6e8, #e6fff6);
+    :root{
+      --bg:#fff7fb; --card:#ffffff; --ink:#2b2b2b;
+      --pink:#ff6fae; --pink2:#ffd1e6; --mint:#7ee0c3;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius:18px;
+      font-family: ui-sans-serif, system-ui, "Noto Sans TC", Arial;
     }
-    .box {
-      background: white;
-      padding: 32px 40px;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-      text-align: center;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, #ffe6f2, transparent),
+        radial-gradient(900px 600px at 90% 10%, #e8fff8, transparent),
+        var(--bg);
+      color:var(--ink);
     }
-    h1 {
-      margin: 0 0 12px;
-      color: #ff5fa2;
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter: blur(10px);
+      background:rgba(255,247,251,.72);
+      border-bottom:1px solid rgba(0,0,0,.06);
     }
-    p {
-      margin: 0;
-      color: #555;
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:900}
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      background:linear-gradient(135deg,var(--pink),var(--mint));
+      box-shadow: var(--shadow);
     }
+    .pill{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(0,0,0,.07);
+      padding:10px 12px;border-radius:999px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.05);
+    }
+    input,select{
+      border:none;outline:none;background:transparent;
+      font-size:14px; padding:4px 6px;
+    }
+    button{
+      border:none;cursor:pointer;border-radius:999px;
+      padding:10px 14px;font-weight:800;
+    }
+    .btn{
+      background:linear-gradient(135deg,var(--pink),#ff9ed0);
+      color:white; box-shadow: 0 10px 18px rgba(255,111,174,.25);
+    }
+    .btn2{background:rgba(0,0,0,.06);}
+    .btn3{
+      background:linear-gradient(135deg,#7ee0c3,#b8fff0);
+      box-shadow: 0 10px 18px rgba(126,224,195,.25);
+      font-weight:900;
+    }
+    .hero{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+    }
+    @media(max-width:900px){.hero{grid-template-columns:1fr}}
+    .heroCard{
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+      overflow:hidden;
+      position:relative;
+    }
+    .spark{
+      position:absolute; inset:-40px -40px auto auto;
+      width:220px;height:220px;border-radius:999px;
+      background:radial-gradient(circle at 30% 30%, rgba(255,111,174,.55), transparent 60%),
+                 radial-gradient(circle at 70% 70%, rgba(126,224,195,.55), transparent 60%);
+      filter: blur(0px);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+    .hero h1{margin:0 0 10px;font-size:28px}
+    .hero p{margin:0;opacity:.8;line-height:1.55}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .badge{
+      font-size:12px; padding:6px 10px;border-radius:999px;
+      background:rgba(255,111,174,.12);
+      border:1px dashed rgba(255,111,174,.35)
+    }
+    .grid{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:14px;margin-top:18px;
+    }
+    @media(max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:420px){.grid{grid-template-columns:1fr}}
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .card:hover{transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,0,0,.10);}
+    .img{
+      aspect-ratio: 1/1;
+      background:#f3f3f3;
+      display:block;width:100%;object-fit:cover;
+    }
+    .pad{padding:12px}
+    .title{font-weight:900;margin:0 0 6px; line-height:1.25}
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .price{font-weight:1000;color:#ff3d97}
+    .tag{
+      font-size:12px;padding:6px 10px;border-radius:999px;
+      background:rgba(255,111,174,.12);
+      border:1px dashed rgba(255,111,174,.35)
+    }
+    .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .small{font-size:12px; opacity:.75}
+    .toast{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:18px;background:rgba(0,0,0,.78);
+      color:white;padding:10px 12px;border-radius:12px;display:none;
+      z-index:50;
+    }
+
+    /* Drawer / Modal */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.35);
+      display:none; z-index:19;
+    }
+    .drawer{
+      position:fixed;right:0;top:0;height:100%;
+      width:min(420px,100%);
+      background:rgba(255,255,255,.96);
+      border-left:1px solid rgba(0,0,0,.08);
+      box-shadow: -20px 0 60px rgba(0,0,0,.12);
+      transform:translateX(110%);
+      transition:.25s; z-index:20;
+    }
+    .drawer.open{transform:translateX(0)}
+    .overlay.open{display:block}
+    .cartItem{padding:12px;border-bottom:1px solid rgba(0,0,0,.06)}
+    .qty{display:flex;gap:8px;align-items:center}
+    .qty button{padding:6px 10px}
+    .formCard{
+      background:rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:16px;
+      padding:12px;
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .formCard input, .formCard textarea{
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{resize:vertical;min-height:70px}
+    .modal{
+      position:fixed; inset:0; display:none; place-items:center;
+      z-index:30;
+    }
+    .modal.open{display:grid}
+    .modalCard{
+      width:min(920px, calc(100% - 28px));
+      background:rgba(255,255,255,.98);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:20px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+    .modalBody{
+      display:grid; grid-template-columns: 1fr 1fr;
+    }
+    @media(max-width:860px){.modalBody{grid-template-columns:1fr}}
+    .modalImg{
+      width:100%; height:100%; min-height:320px;
+      object-fit:cover; background:#f3f3f3;
+    }
+    .modalPad{padding:16px}
+    .modalPad h2{margin:0 0 8px}
+    .closeX{position:absolute; right:18px; top:16px}
+    .footer{opacity:.75; font-size:12px; padding:30px 0;}
   </style>
 </head>
+
 <body>
-  <div class="box">
-    <h1>Hello World 👋</h1>
-    <p>如果你看到這個畫面，GitHub Pages 正常運作中</p>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      可愛小舖 <span style="font-weight:700;opacity:.7">✨ cute mall</span>
+    </div>
+
+    <div class="pill">
+      <input id="q" placeholder="搜尋可愛商品…（例：貼紙/貓/充電線）"/>
+      <select id="cat">
+        <option value="">全部分類</option>
+        <option value="貼紙">貼紙</option>
+        <option value="小物">小物</option>
+        <option value="3C">3C</option>
+        <option value="文具">文具</option>
+      </select>
+      <select id="sort">
+        <option value="hot">推薦</option>
+        <option value="priceAsc">價格：低→高</option>
+        <option value="priceDesc">價格：高→低</option>
+        <option value="new">最新</option>
+      </select>
+      <button class="btn2" onclick="applyFilters()">套用</button>
+    </div>
+
+    <button class="btn" onclick="toggleCart(true)">
+      購物車 🧺 <span id="cartCount">0</span>
+    </button>
   </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="heroCard">
+      <div class="spark"></div>
+      <h1>把可愛帶回家 💖</h1>
+      <p>這是「純前端商城外觀」版本：已包含搜尋 / 分類 / 排序 / 商品詳情 / 購物車 / 假結帳流程。<br>
+      下一步你要接 Apps Script API 時，只要把商品資料改成從後端載入即可。</p>
+      <div class="badges">
+        <div class="badge">🌸 Cute UI</div>
+        <div class="badge">🧺 Cart (localStorage)</div>
+        <div class="badge">🔎 Search & Filter</div>
+        <div class="badge">🧾 Checkout (mock)</div>
+      </div>
+    </div>
+
+    <div class="heroCard">
+      <h3 style="margin:0 0 10px;">本週優惠 🎀</h3>
+      <p style="opacity:.8;margin:0 0 12px;line-height:1.55">
+        滿 $499 免運（示意）<br>
+        新品上架：棉花糖充電線、貓貓貼紙包
+      </p>
+      <button class="btn3" onclick="scrollToGrid()">開始逛逛 🐰</button>
+      <div style="height:12px"></div>
+      <button class="btn2" onclick="seedDemoCart()">一鍵加入示範購物車</button>
+    </div>
+  </section>
+
+  <h2 style="margin:18px 0 6px;">商品列表 🧁</h2>
+  <div style="opacity:.75">點商品可看詳情，或直接加入購物車～</div>
+
+  <div id="grid" class="grid"></div>
+
+  <div class="footer">Made with pure HTML (no API) · 可愛小舖 ✨</div>
+</main>
+
+<!-- Overlay + Cart Drawer -->
+<div id="overlay" class="overlay" onclick="closeAll()"></div>
+
+<div id="drawer" class="drawer" aria-label="cart">
+  <div class="wrap">
+    <div class="row" style="margin:10px 0;">
+      <h3 style="margin:0;">你的購物車 🧁</h3>
+      <button class="btn2" onclick="toggleCart(false)">關閉</button>
+    </div>
+
+    <div id="cartList"></div>
+
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">
+      <div class="row"><div>小計</div><div style="font-weight:1000" id="sum">$0</div></div>
+      <div class="row" style="margin-top:6px">
+        <div class="small">運費（示意）</div>
+        <div class="small" id="ship">$60</div>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <div style="font-weight:900">合計</div>
+        <div style="font-weight:1000;color:#ff3d97" id="grand">$0</div>
+      </div>
+
+      <h4 style="margin:14px 0 8px;">結帳資訊（示意）</h4>
+      <div class="formCard">
+        <input id="buyerName" placeholder="姓名"/>
+        <input id="buyerEmail" placeholder="Email"/>
+        <input id="buyerPhone" placeholder="手機 (選填)"/>
+        <textarea id="buyerNote" placeholder="備註（例：晚上收件 / 不要敲門）"></textarea>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button class="btn" style="flex:1" onclick="mockCheckout()">送出訂單 🧾</button>
+        <button class="btn2" onclick="clearCart()">清空</button>
+      </div>
+
+      <div style="margin-top:12px;opacity:.8;font-size:13px;line-height:1.45">
+        ※ 目前不會真的送到後端，只會生成一個「假訂單號」供你測 UI。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Product Modal -->
+<div id="modal" class="modal" aria-label="product modal">
+  <div class="modalCard">
+    <div style="position:relative">
+      <button class="btn2 closeX" onclick="closeModal()">關閉</button>
+    </div>
+    <div class="modalBody">
+      <img id="mImg" class="modalImg" alt="">
+      <div class="modalPad">
+        <div class="row">
+          <div class="tag" id="mCat">分類</div>
+          <div class="small">庫存 <span id="mStock">0</span></div>
+        </div>
+        <h2 id="mTitle"></h2>
+        <div class="row" style="margin:10px 0 8px;">
+          <div class="price" style="font-size:22px" id="mPrice">$0</div>
+          <button class="btn" id="mAdd">加入 🧺</button>
+        </div>
+        <div style="opacity:.8;line-height:1.6" id="mDesc"></div>
+
+        <div style="margin-top:14px">
+          <div class="small">賣家（示意）</div>
+          <div style="font-weight:900" id="mSeller">甜甜圈小舖</div>
+        </div>
+
+        <div style="margin-top:14px;opacity:.7;font-size:12px;line-height:1.5">
+          下一步接 API 後：這裡可以放評價、規格、物流、優惠券等。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  // ====== Demo products (no API) ======
+  const PRODUCTS = [
+    {
+      id:"P001", title:"貓貓貼紙包（20入）", price:79, stock:42, category:"貼紙",
+      seller:"貓爪小店", desc:"防水材質，適合貼筆電/行李箱。可愛到不行！",
+      image:"https://picsum.photos/seed/cat-sticker/800"
+    },
+    {
+      id:"P002", title:"棉花糖充電線（Type-C）", price:199, stock:18, category:"3C",
+      seller:"軟糖電器", desc:"柔軟耐折，粉嫩配色，充電心情變好～",
+      image:"https://picsum.photos/seed/cable-cute/800"
+    },
+    {
+      id:"P003", title:"小熊造型便利貼", price:59, stock:65, category:"文具",
+      seller:"小熊商店", desc:"寫提醒超療癒，貼滿桌面也很可愛。",
+      image:"https://picsum.photos/seed/bear-note/800"
+    },
+    {
+      id:"P004", title:"雲朵收納袋（S）", price:129, stock:33, category:"小物",
+      seller:"雲朵小舖", desc:"放耳機/充電器/口紅都可以，外出超方便。",
+      image:"https://picsum.photos/seed/cloud-bag/800"
+    },
+    {
+      id:"P005", title:"粉彩筆記本（A5）", price:149, stock:22, category:"文具",
+      seller:"甜甜圈小舖", desc:"厚磅紙不透墨，封面是奶油粉配色。",
+      image:"https://picsum.photos/seed/pastel-book/800"
+    },
+    {
+      id:"P006", title:"星星吊飾（隨機色）", price:89, stock:50, category:"小物",
+      seller:"星星工坊", desc:"掛在包包上，走到哪都閃亮亮✨",
+      image:"https://picsum.photos/seed/star-charm/800"
+    }
+  ];
+
+  // ====== Cart (localStorage) ======
+  const LS_KEY = "cuteMallCart_v2";
+
+  function toast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.display = "block";
+    setTimeout(()=>t.style.display="none", 1600);
+  }
+
+  function getCart(){
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function setCart(items){
+    localStorage.setItem(LS_KEY, JSON.stringify(items));
+    renderCartBadge();
+  }
+  function cartCount(){
+    return getCart().reduce((s,x)=>s + (x.qty||0), 0);
+  }
+  function renderCartBadge(){
+    document.getElementById("cartCount").textContent = cartCount();
+  }
+
+  function addToCart(productId){
+    const p = PRODUCTS.find(x=>x.id===productId);
+    if(!p) return;
+    const cart = getCart();
+    const found = cart.find(x=>x.productId===productId);
+    if(found) found.qty += 1;
+    else cart.push({ productId, title:p.title, price:p.price, qty:1 });
+    setCart(cart);
+    toast("已加入購物車 ✨");
+  }
+
+  function updateQty(productId, delta){
+    const cart = getCart();
+    const it = cart.find(x=>x.productId===productId);
+    if(!it) return;
+    it.qty += delta;
+    if(it.qty<=0) cart.splice(cart.indexOf(it),1);
+    setCart(cart);
+    renderCart();
+  }
+
+  function clearCart(){
+    setCart([]);
+    renderCart();
+    toast("已清空");
+  }
+
+  // ====== UI: Grid + Filters ======
+  let filtered = [...PRODUCTS];
+
+  function applyFilters(){
+    const q = document.getElementById("q").value.trim().toLowerCase();
+    const cat = document.getElementById("cat").value.trim();
+    const sort = document.getElementById("sort").value;
+
+    filtered = PRODUCTS
+      .filter(p => !cat || p.category === cat)
+      .filter(p => !q || (p.title + " " + p.desc + " " + p.seller).toLowerCase().includes(q));
+
+    if(sort === "priceAsc") filtered.sort((a,b)=>a.price-b.price);
+    if(sort === "priceDesc") filtered.sort((a,b)=>b.price-a.price);
+    if(sort === "new") filtered.sort((a,b)=>b.id.localeCompare(a.id));
+    if(sort === "hot") filtered.sort((a,b)=>(b.stock%7)-(a.stock%7)); // 只是示意
+
+    renderGrid(filtered);
+  }
+
+  function renderGrid(items){
+    const grid = document.getElementById("grid");
+    grid.innerHTML = items.map(p => `
+      <div class="card">
+        <img class="img" src="${p.image}" alt="">
+        <div class="pad">
+          <div class="meta">
+            <div class="tag">${p.category}</div>
+            <div class="small">庫存 ${p.stock}</div>
+          </div>
+          <h3 class="title">${escapeHtml(p.title)}</h3>
+          <div class="row">
+            <div class="price">$${p.price}</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn2" onclick="openModal('${p.id}')">詳情</button>
+              <button class="btn" onclick="addToCart('${p.id}')">加入 🧺</button>
+            </div>
+          </div>
+          <div class="small" style="margin-top:8px;line-height:1.4">
+            ${escapeHtml(p.desc.slice(0,52))}${p.desc.length>52?"…":""}
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(s){
+    return String(s||"").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function scrollToGrid(){
+    document.getElementById("grid").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  // ====== Cart drawer ======
+  function toggleCart(open){
+    document.getElementById("drawer").classList.toggle("open", !!open);
+    document.getElementById("overlay").classList.toggle("open", !!open);
+    if(open) renderCart();
+  }
+
+  function closeAll(){
+    toggleCart(false);
+    closeModal();
+  }
+
+  function renderCart(){
+    const cart = getCart();
+    const list = document.getElementById("cartList");
+    if(cart.length===0){
+      list.innerHTML = `<div style="padding:18px;opacity:.7">還沒有選商品～去逛逛吧 🐰</div>`;
+      document.getElementById("sum").textContent = "$0";
+      document.getElementById("ship").textContent = "$0";
+      document.getElementById("grand").textContent = "$0";
+      return;
+    }
+
+    list.innerHTML = cart.map(it=>{
+      const p = PRODUCTS.find(x=>x.id===it.productId);
+      return `
+        <div class="cartItem">
+          <div class="row">
+            <div style="font-weight:900">${escapeHtml(it.title)}</div>
+            <div style="font-weight:1000;color:#ff3d97">$${it.price}</div>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <div class="qty">
+              <button class="btn2" onclick="updateQty('${it.productId}',-1)">-</button>
+              <div style="min-width:24px;text-align:center;font-weight:900">${it.qty}</div>
+              <button class="btn2" onclick="updateQty('${it.productId}',+1)">+</button>
+            </div>
+            <div class="small">小計 $${it.qty * it.price}</div>
+          </div>
+          <div class="small" style="margin-top:6px">賣家：${escapeHtml(p?.seller || "—")}</div>
+        </div>
+      `;
+    }).join("");
+
+    const sum = cart.reduce((s,x)=>s + x.qty*x.price,0);
+    const ship = sum >= 499 ? 0 : 60; // 示意：滿額免運
+    const grand = sum + ship;
+
+    document.getElementById("sum").textContent = "$" + sum;
+    document.getElementById("ship").textContent = "$" + ship;
+    document.getElementById("grand").textContent = "$" + grand;
+  }
+
+  function seedDemoCart(){
+    setCart([
+      {productId:"P002", title:"棉花糖充電線（Type-C）", price:199, qty:1},
+      {productId:"P001", title:"貓貓貼紙包（20入）", price:79, qty:2}
+    ]);
+    toast("已加入示範商品 🧁");
+    toggleCart(true);
+  }
+
+  // ====== Product modal ======
+  function openModal(productId){
+    const p = PRODUCTS.find(x=>x.id===productId);
+    if(!p) return;
+
+    document.getElementById("mImg").src = p.image;
+    document.getElementById("mCat").textContent = p.category;
+    document.getElementById("mStock").textContent = p.stock;
+    document.getElementById("mTitle").textContent = p.title;
+    document.getElementById("mPrice").textContent = "$" + p.price;
+    document.getElementById("mDesc").textContent = p.desc;
+    document.getElementById("mSeller").textContent = p.seller;
+
+    const addBtn = document.getElementById("mAdd");
+    addBtn.onclick = ()=> { addToCart(productId); };
+
+    document.getElementById("modal").classList.add("open");
+    document.getElementById("overlay").classList.add("open");
+  }
+
+  function closeModal(){
+    document.getElementById("modal").classList.remove("open");
+    // overlay 可能還在（購物車也會用），所以不強制關
+    const cartOpen = document.getElementById("drawer").classList.contains("open");
+    if(!cartOpen) document.getElementById("overlay").classList.remove("open");
+  }
+
+  // ====== Mock checkout ======
+  function mockCheckout(){
+    const name = document.getElementById("buyerName").value.trim();
+    const email = document.getElementById("buyerEmail").value.trim();
+    const cart = getCart();
+    if(!name || !email){ toast("請填姓名與 Email"); return; }
+    if(cart.length===0){ toast("購物車是空的"); return; }
+
+    const orderId = "MOCK-" + Math.random().toString(16).slice(2,8).toUpperCase();
+    toast("下單成功！訂單號 " + orderId);
+    clearCart();
+    toggleCart(false);
+  }
+
+  // init
+  renderCartBadge();
+  applyFilters();
+
+  // ESC to close
+  window.addEventListener("keydown", (e)=>{
+    if(e.key === "Escape") closeAll();
+  });
+</script>
 </body>
 </html>
